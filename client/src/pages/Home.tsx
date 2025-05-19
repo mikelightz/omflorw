@@ -26,7 +26,7 @@ export default function Home() {
             animate="visible"
             variants={slideUp}
           >
-            Come home to yourself—mind, body, and moon.
+            Your Roadmap Home to Wholeness—mind, body and spirit
           </motion.p>
           <motion.div
             initial="hidden"
