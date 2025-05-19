@@ -24,7 +24,7 @@ export default function About() {
           {/* Circular portrait image */}
           <div className="w-64 h-64 rounded-full overflow-hidden shadow-lg border-4 border-cream flex-shrink-0 mx-auto md:mx-0">
             <img 
-              src="https://xsgames.co/randomusers/assets/avatars/female/46.jpg" 
+              src="https://drive.google.com/uc?export=view&id=1xCWh0EtMewnMeGlO5Xqe889RO2_D9ERL" 
               alt="Founder portrait" 
               className="w-full h-full object-cover"
             />
