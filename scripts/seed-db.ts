@@ -33,7 +33,7 @@ async function seedProducts() {
       price: 197.00,
       type: "COURSE",
       description: "A comprehensive online course to deepen your connection with lunar cycles. Includes 8 video modules, guided practices, and printable resources.",
-      imageUrl: "https://images.unsplash.com/photo-1504805572947-34fad45aed93?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1612367289789-872b7c90a0ab?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80",
       originalPrice: null
     },
     {
@@ -41,7 +41,7 @@ async function seedProducts() {
       price: 225.00,
       type: "BUNDLE",
       description: "The complete lunar wellness package: Print journal, Moon Masterclass, and a 1:1 session to get personalized guidance for your journey.",
-      imageUrl: "https://images.unsplash.com/photo-1501139083538-0139583c060f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80",
+      imageUrl: "https://images.unsplash.com/photo-1606982663527-78f399a3b9be?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80",
       originalPrice: 269.00
     }
   ];
