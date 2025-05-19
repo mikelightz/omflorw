@@ -1,8 +1,36 @@
 import { motion } from "framer-motion";
 import { fadeIn } from "@/lib/animations";
 import { Link } from "wouter";
+import { useMutation } from "@tanstack/react-query";
+import { queryClient, apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Offerings() {
+  const { toast } = useToast();
+  
+  const addToCartMutation = useMutation({
+    mutationFn: (productId: number) => 
+      apiRequest("POST", "/api/cart/add", { productId }),
+    onSuccess: () => {
+      toast({
+        title: "Added to cart",
+        description: "Product has been added to your cart.",
+      });
+      queryClient.invalidateQueries({ queryKey: ['/api/cart'] });
+    },
+    onError: (error) => {
+      toast({
+        title: "Error",
+        description: error.message || "Could not add to cart. Please try again.",
+        variant: "destructive",
+      });
+    }
+  });
+  
+  const handleAddToCart = (productId: number) => {
+    addToCartMutation.mutate(productId);
+  };
+  
   return (
     <div className="pt-24 pb-16">
       <div className="container-custom max-w-4xl">
@@ -152,7 +180,10 @@ export default function Offerings() {
                 
                 <div className="mt-6">
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="bg-gold text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300">
+                    <button 
+                      className="bg-gold text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300"
+                      onClick={() => handleAddToCart(1)}
+                    >
                       Digital Version ($27)
                     </button>
                     <button className="bg-terracotta text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300">
