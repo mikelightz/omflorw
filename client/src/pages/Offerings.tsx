@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { fadeIn } from "@/lib/animations";
+import { Link } from "wouter";
 
 export default function Offerings() {
   return (
@@ -94,9 +95,11 @@ export default function Offerings() {
                 
                 <div className="mt-6">
                   <p className="text-lg font-medium text-deepblue mb-2">Investment: $197</p>
-                  <button className="bg-deepblue text-white px-6 py-3 rounded-lg inline-block hover:bg-opacity-90 transition duration-300">
-                    Learn More
-                  </button>
+                  <Link href="/moon-masterclass">
+                    <button className="bg-deepblue text-white px-6 py-3 rounded-lg inline-block hover:bg-opacity-90 transition duration-300">
+                      Learn More
+                    </button>
+                  </Link>
                 </div>
               </div>
               

@@ -7,6 +7,7 @@ import About from "@/pages/About";
 import Offerings from "@/pages/Offerings";
 import Shop from "@/pages/Shop";
 import Cart from "@/pages/Cart";
+import MoonMasterclass from "@/pages/MoonMasterclass";
 import Contact from "@/pages/Contact";
 import NotFound from "@/pages/not-found";
 
@@ -21,6 +22,7 @@ function App() {
           <Route path="/offerings" component={Offerings} />
           <Route path="/shop" component={Shop} />
           <Route path="/cart" component={Cart} />
+          <Route path="/moon-masterclass" component={MoonMasterclass} />
           <Route path="/contact" component={Contact} />
           <Route component={NotFound} />
         </Switch>
