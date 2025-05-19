@@ -116,76 +116,27 @@ export default function Contact() {
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-8 rounded-xl shadow-md">
-                <div className="mb-6">
-                  <label htmlFor="name" className="block text-gray-700 mb-2">Name</label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-terracotta
-                      ${errors.name ? 'border-red-500' : 'border-gray-300'}`}
-                    {...register("name")}
-                  />
-                  {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-                  )}
-                </div>
+              <div className="bg-white p-8 rounded-xl shadow-md">
+                <h3 className="font-playfair text-xl mb-6 text-deepblue">Contact Us</h3>
+                <p className="text-gray-700 mb-6">
+                  Fill out the form below to send us a message. We'll get back to you as soon as possible.
+                </p>
                 
-                <div className="mb-6">
-                  <label htmlFor="email" className="block text-gray-700 mb-2">Email</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-terracotta
-                      ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-                    {...register("email")}
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-                  )}
+                {/* JotForm Embed */}
+                <div className="jotform-embed">
+                  {/* Replace the src with your actual JotForm URL */}
+                  <iframe
+                    id="JotFormIFrame"
+                    title="Contact Form"
+                    src="https://form.jotform.com/your-jotform-id"
+                    style={{ width: '100%', height: '539px', border: 'none' }}
+                    allow="camera; microphone; autoplay; encrypted-media;"
+                  ></iframe>
+                  <p className="text-xs text-gray-500 mt-4">
+                    Powered by JotForm
+                  </p>
                 </div>
-                
-                <div className="mb-6">
-                  <label htmlFor="subject" className="block text-gray-700 mb-2">Subject</label>
-                  <select 
-                    id="subject" 
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-terracotta
-                      ${errors.subject ? 'border-red-500' : 'border-gray-300'}`}
-                    {...register("subject")}
-                  >
-                    <option>General Inquiry</option>
-                    <option>1:1 Sessions</option>
-                    <option>Moon Masterclass</option>
-                    <option>Somatic Moon Journal</option>
-                    <option>Other</option>
-                  </select>
-                  {errors.subject && (
-                    <p className="text-red-500 text-sm mt-1">{errors.subject.message}</p>
-                  )}
-                </div>
-                
-                <div className="mb-6">
-                  <label htmlFor="message" className="block text-gray-700 mb-2">Message</label>
-                  <textarea 
-                    id="message" 
-                    rows={5} 
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:border-terracotta
-                      ${errors.message ? 'border-red-500' : 'border-gray-300'}`}
-                    {...register("message")}
-                  />
-                  {errors.message && (
-                    <p className="text-red-500 text-sm mt-1">{errors.message.message}</p>
-                  )}
-                </div>
-                
-                <button 
-                  type="submit" 
-                  className="w-full bg-terracotta text-white py-3 px-6 rounded-lg hover:bg-opacity-90 transition duration-300"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Sending..." : "Send Message"}
-                </button>
-              </form>
+              </div>
             </motion.div>
           </div>
         </div>
