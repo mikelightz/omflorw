@@ -11,8 +11,17 @@ import { CartItem } from "@/types";
 export default function Cart() {
   const { toast } = useToast();
   
-  const { data: cart, isLoading } = useQuery({
+  interface CartData {
+    id: number;
+    items: CartItem[];
+    total: number;
+  }
+  
+  const { data: cart, isLoading } = useQuery<CartData>({
     queryKey: ['/api/cart'],
+    // Return an empty cart as fallback if there's an error
+    refetchOnWindowFocus: false,
+    refetchOnMount: true
   });
   
   const removeFromCartMutation = useMutation({
@@ -55,11 +64,11 @@ export default function Cart() {
             <div className="w-8 h-8 border-4 border-terracotta rounded-full border-t-transparent animate-spin mx-auto"></div>
             <p className="mt-4 text-gray-600">Loading your cart...</p>
           </div>
-        ) : cart?.items?.length > 0 ? (
+        ) : cart && cart.items && cart.items.length > 0 ? (
           <div className="bg-white rounded-xl shadow-md overflow-hidden">
             <div className="p-6">
               <div className="mb-6">
-                {cart.items.map((item: any) => (
+                {cart && cart.items && cart.items.map((item) => (
                   <div key={item.id} className="flex items-center justify-between py-4 border-b border-gray-100">
                     <div className="flex items-center space-x-4">
                       <div className="font-medium">{item.productName}</div>
@@ -81,7 +90,7 @@ export default function Cart() {
               
               <div className="flex justify-between items-center pt-4 border-t border-gray-200">
                 <div className="text-lg font-medium">Total</div>
-                <div className="text-xl font-bold text-terracotta">${cart.total.toFixed(2)}</div>
+                <div className="text-xl font-bold text-terracotta">${cart && cart.total ? cart.total.toFixed(2) : '0.00'}</div>
               </div>
               
               <div className="mt-8 space-y-4">

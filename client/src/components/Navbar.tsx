@@ -3,6 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Menu, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
+import { CartItem } from "@/types";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +11,13 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   
   // Get cart data to show item count
-  const { data: cart } = useQuery({
+  interface CartData {
+    id: number;
+    items: CartItem[];
+    total: number;
+  }
+  
+  const { data: cart } = useQuery<CartData>({
     queryKey: ['/api/cart'],
     // Disable the automatic error when the cart is not found
     // It's normal to not have a cart in the beginning
@@ -60,7 +67,7 @@ export default function Navbar() {
             <Link href="/cart">
               <a className="relative text-deepblue hover:text-terracotta transition duration-300" aria-label="View cart">
                 <ShoppingBag className="h-6 w-6" />
-                {cart?.items?.length > 0 && (
+                {cart && cart.items && cart.items.length > 0 && (
                   <span className="absolute -top-2 -right-2 bg-terracotta text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {cart.items.length}
                   </span>
