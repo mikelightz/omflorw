@@ -85,7 +85,7 @@ export default function Contact() {
               <div className="mb-10">
                 <h3 className="font-medium text-deepblue mb-4">Connect With Us</h3>
                 <div className="flex space-x-4">
-                  <SocialLink href="https://www.instagram.com/dreamingwithflor/" icon={<Instagram size={24} />} label="Instagram" />
+                  <SocialLink href="https://www.instagram.com/omflorwellness/" icon={<Instagram size={24} />} label="Instagram" />
                   <SocialLink href="https://facebook.com" icon={<Facebook size={24} />} label="Facebook" />
                 </div>
               </div>

@@ -14,9 +14,9 @@ export default function Footer() {
               Guiding you back to yourself through lunar wisdom, embodiment practices, and psychosomatic healing.
             </p>
             <div className="flex justify-center md:justify-start space-x-4">
-              <SocialLink href="https://instagram.com" icon={<Instagram size={18} />} />
+              <SocialLink href="https://www.instagram.com/omflorwellness/" icon={<Instagram size={18} />} />
               <SocialLink href="https://facebook.com" icon={<Facebook size={18} />} />
-              <SocialLink href="mailto:contact@omflor.com" icon={<Mail size={18} />} />
+              <SocialLink href="mailto:omflorwellness@gmail.com" icon={<Mail size={18} />} />
             </div>
           </div>
           
