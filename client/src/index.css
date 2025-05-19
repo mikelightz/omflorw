@@ -1,0 +1,141 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lato:wght@300;400;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 36 30% 96%;
+  --foreground: 225 39% 25%;
+  
+  --muted: 60 5% 96%;
+  --muted-foreground: 25 5% 45%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 225 39% 25%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 225 39% 25%;
+  
+  --border: 20 6% 90%;
+  --input: 20 6% 90%;
+  
+  /* Brand colors */
+  --terracotta: 14 37% 58%;
+  --olive: 84 13% 49%;
+  --cream: 37 64% 96%;
+  --neutral: 0 0% 92%;
+  --gold: 46 57% 52%;
+  --deepblue: 216 50% 25%;
+
+  /* Primary: using terracotta as primary */
+  --primary: 14 37% 58%;
+  --primary-foreground: 0 0% 100%;
+  
+  /* Secondary: using olive as secondary */
+  --secondary: 84 13% 49%;
+  --secondary-foreground: 0 0% 100%;
+  
+  /* Accent: using gold as accent */
+  --accent: 46 57% 52%;
+  --accent-foreground: 225 39% 25%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  
+  --ring: 46 57% 52%;
+  
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 225 39% 25%;
+  --foreground: 0 0% 98%;
+  
+  --muted: 223 47% 11%;
+  --muted-foreground: 215 20% 65%;
+  
+  --popover: 225 39% 25%;
+  --popover-foreground: 0 0% 98%;
+  
+  --card: 225 39% 25%;
+  --card-foreground: 0 0% 98%;
+  
+  --border: 223 47% 11%;
+  --input: 223 47% 11%;
+  
+  --primary: 14 37% 58%;
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 84 13% 49%;
+  --secondary-foreground: 0 0% 100%;
+  
+  --accent: 46 57% 52%;
+  --accent-foreground: 225 39% 25%;
+  
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 0 0% 98%;
+  
+  --ring: 46 57% 52%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply font-lato bg-cream text-deepblue antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-playfair;
+  }
+}
+
+@layer components {
+  .container-custom {
+    @apply container mx-auto px-4;
+  }
+  
+  .text-shadow {
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+  }
+  
+  .animate-fade-in {
+    @apply animate-in fade-in duration-700;
+  }
+  
+  .animate-slide-up {
+    @apply animate-in slide-in-from-bottom-5 duration-700;
+  }
+  
+  .moon-phases-bg {
+    @apply relative;
+    background-image: url('https://images.unsplash.com/photo-1534447677768-be436bb09401?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80');
+    background-size: cover;
+    background-position: center;
+  }
+  
+  .moon-phases-bg::before {
+    content: "";
+    @apply absolute inset-0 bg-gradient-to-b from-deepblue/60 to-terracotta/40 z-0;
+  }
+  
+  .tab-underline {
+    @apply relative;
+  }
+  
+  .tab-underline::after {
+    content: '';
+    @apply absolute w-0 h-0.5 bottom-[-2px] left-0 bg-gold transition-all duration-300;
+  }
+  
+  .tab-underline:hover::after, .active-tab::after {
+    @apply w-full;
+  }
+}
