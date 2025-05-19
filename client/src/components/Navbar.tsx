@@ -21,8 +21,10 @@ export default function Navbar() {
     queryKey: ['/api/cart'],
     // Disable the automatic error when the cart is not found
     // It's normal to not have a cart in the beginning
-    refetchOnWindowFocus: false,
-    retry: false
+    refetchOnWindowFocus: true,
+    retry: false,
+    refetchInterval: 2000, // Auto-refresh cart every 2 seconds
+    staleTime: 1000 // Consider data stale after 1 second
   });
 
   useEffect(() => {
