@@ -124,11 +124,10 @@ export default function Contact() {
                 
                 {/* JotForm Embed */}
                 <div className="jotform-embed">
-                  {/* Replace the src with your actual JotForm URL */}
                   <iframe
                     id="JotFormIFrame"
                     title="Contact Form"
-                    src="https://form.jotform.com/your-jotform-id"
+                    src="https://form.jotform.com/251386272469163"
                     style={{ width: '100%', height: '539px', border: 'none' }}
                     allow="camera; microphone; autoplay; encrypted-media;"
                   ></iframe>
