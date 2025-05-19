@@ -24,7 +24,7 @@ export default function About() {
           {/* Circular portrait image */}
           <div className="w-64 h-64 rounded-full overflow-hidden shadow-lg border-4 border-cream flex-shrink-0 mx-auto md:mx-0">
             <img 
-              src="/attached_assets/C542239F-F1F6-45FF-A765-3094D8037B8E.JPG" 
+              src="/images/founder-portrait.jpg" 
               alt="Founder portrait" 
               className="w-full h-full object-cover"
             />
