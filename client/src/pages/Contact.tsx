@@ -127,7 +127,7 @@ export default function Contact() {
                   <iframe
                     id="JotFormIFrame"
                     title="Contact Form"
-                    src="https://form.jotform.com/251386272469163"
+                    src="https://form.jotform.com/251386728462162"
                     style={{ width: '100%', height: '539px', border: 'none' }}
                     allow="camera; microphone; autoplay; encrypted-media;"
                   ></iframe>
