@@ -1,12 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu } from "lucide-react";
+import { Menu, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [location] = useLocation();
   const [scrolled, setScrolled] = useState(false);
+  
+  // Get cart data to show item count
+  const { data: cart } = useQuery({
+    queryKey: ['/api/cart'],
+    // Disable the automatic error when the cart is not found
+    // It's normal to not have a cart in the beginning
+    refetchOnWindowFocus: false,
+    retry: false
+  });
 
   useEffect(() => {
     const handleScroll = () => {

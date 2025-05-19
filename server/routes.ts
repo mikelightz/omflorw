@@ -83,10 +83,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { productId } = cartItemSchema.parse(req.body);
       
       // Generate a cart ID if one doesn't exist in the session
-      const cartId = req.session?.cartId || Date.now();
+      // Using a simple number instead of timestamp to avoid integer overflow
+      const cartId = req.session?.cartId || Math.floor(Math.random() * 1000000);
       if (!req.session?.cartId) {
         req.session.cartId = cartId;
       }
+      
+      console.log("Cart ID:", cartId);
       
       // Get product to add to cart
       const product = await storage.getProductById(productId);
