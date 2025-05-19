@@ -55,11 +55,11 @@ export default function Home() {
             
             <h2 className="font-playfair text-3xl md:text-4xl mb-6 text-deepblue">Our Mission</h2>
             
-            {/* A serene meditation image with soft lighting */}
+            {/* A serene sanctuary space with celestial elements */}
             <div className="mb-8 max-w-xl mx-auto rounded-xl overflow-hidden shadow-lg">
               <img 
-                src="https://images.unsplash.com/photo-1515281239448-2abe329fe5e5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80" 
-                alt="Serene meditation scene" 
+                src="https://images.unsplash.com/photo-1536623975707-c4b3b2af565d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&h=500&q=80" 
+                alt="Serene sanctuary space with soft lighting" 
                 className="w-full h-auto"
               />
             </div>
