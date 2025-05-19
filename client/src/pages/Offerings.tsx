@@ -81,10 +81,16 @@ export default function Offerings() {
                 <div className="mt-6">
                   <p className="text-lg font-medium text-deepblue mb-2">Session Options:</p>
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <button className="bg-terracotta text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300">
+                    <button 
+                      className="bg-terracotta text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300"
+                      onClick={() => handleAddToCart(3)}
+                    >
                       Single Session ($120)
                     </button>
-                    <button className="bg-olive text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300">
+                    <button 
+                      className="bg-olive text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300"
+                      onClick={() => handleAddToCart(4)}
+                    >
                       Package of 4 ($425)
                     </button>
                   </div>
