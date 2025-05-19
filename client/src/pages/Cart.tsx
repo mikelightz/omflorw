@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { ShoppingBag, X, Trash } from "lucide-react";
 import { Link } from "wouter";
+import { CartItem } from "@/types";
 
 export default function Cart() {
   const { toast } = useToast();

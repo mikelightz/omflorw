@@ -56,13 +56,26 @@ export default function Navbar() {
             <NavLink href="/contact" active={isActive("/contact")}>Contact</NavLink>
           </div>
           
-          <button 
-            className="md:hidden text-deepblue"
-            onClick={toggleMenu}
-            aria-label="Toggle menu"
-          >
-            <Menu className="h-6 w-6" />
-          </button>
+          <div className="flex items-center space-x-4">
+            <Link href="/cart">
+              <a className="relative text-deepblue hover:text-terracotta transition duration-300" aria-label="View cart">
+                <ShoppingBag className="h-6 w-6" />
+                {cart?.items?.length > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-terracotta text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {cart.items.length}
+                  </span>
+                )}
+              </a>
+            </Link>
+            
+            <button 
+              className="md:hidden text-deepblue"
+              onClick={toggleMenu}
+              aria-label="Toggle menu"
+            >
+              <Menu className="h-6 w-6" />
+            </button>
+          </div>
         </div>
         
         {/* Mobile menu */}
@@ -80,6 +93,7 @@ export default function Navbar() {
                 <MobileNavLink href="/about" active={isActive("/about")} onClick={closeMenu}>About</MobileNavLink>
                 <MobileNavLink href="/offerings" active={isActive("/offerings")} onClick={closeMenu}>Offerings</MobileNavLink>
                 <MobileNavLink href="/shop" active={isActive("/shop")} onClick={closeMenu}>Shop</MobileNavLink>
+                <MobileNavLink href="/cart" active={isActive("/cart")} onClick={closeMenu}>Cart</MobileNavLink>
                 <MobileNavLink href="/contact" active={isActive("/contact")} onClick={closeMenu}>Contact</MobileNavLink>
               </div>
             </motion.div>

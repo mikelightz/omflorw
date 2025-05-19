@@ -78,13 +78,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Shopping cart
+  app.get("/api/cart", async (req, res) => {
+    try {
+      // Clear invalid cart IDs from previous sessions
+      if (req.session.cartId && typeof req.session.cartId !== 'number') {
+        delete req.session.cartId;
+      }
+      
+      const cartId = req.session?.cartId;
+      
+      if (!cartId) {
+        // Return an empty cart if no cart exists yet
+        return res.status(200).json({ id: 0, items: [], total: 0 });
+      }
+      
+      try {
+        const cart = await storage.getCart(cartId);
+        
+        if (!cart) {
+          // Return an empty cart if the stored cart doesn't exist
+          return res.status(200).json({ id: cartId, items: [], total: 0 });
+        }
+        
+        res.status(200).json(cart);
+      } catch (dbError) {
+        console.error("Database error getting cart:", dbError);
+        // If there's a database error, remove the problematic cart ID and return empty cart
+        delete req.session.cartId;
+        return res.status(200).json({ id: 0, items: [], total: 0 });
+      }
+    } catch (error) {
+      console.error("Error getting cart:", error);
+      // Return empty cart on error instead of error message to improve UX
+      res.status(200).json({ id: 0, items: [], total: 0 });
+    }
+  });
+  
   app.post("/api/cart/add", async (req, res) => {
     try {
       const { productId } = cartItemSchema.parse(req.body);
       
+      // Clear invalid cart IDs from previous sessions
+      if (req.session.cartId && typeof req.session.cartId !== 'number') {
+        delete req.session.cartId;
+      }
+      
       // Generate a cart ID if one doesn't exist in the session
-      // Using a simple number instead of timestamp to avoid integer overflow
-      const cartId = req.session?.cartId || Math.floor(Math.random() * 1000000);
+      // Using a small integer to avoid PostgreSQL integer overflow
+      const cartId = req.session?.cartId || Math.floor(Math.random() * 10000);
       if (!req.session?.cartId) {
         req.session.cartId = cartId;
       }
@@ -97,14 +138,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(404).json({ message: "Product not found" });
       }
       
-      const cartItem = await storage.addToCart(cartId, productId);
-      res.status(201).json(cartItem);
+      try {
+        const cartItem = await storage.addToCart(cartId, productId);
+        res.status(201).json(cartItem);
+      } catch (dbError) {
+        console.error("Database error adding to cart:", dbError);
+        res.status(400).json({ message: "Could not add to cart. Database error." });
+      }
     } catch (error) {
       console.error("Error adding to cart:", error);
       res.status(400).json({ message: "Invalid cart data" });
     }
   });
 
+  app.delete("/api/cart/remove/:itemId", async (req, res) => {
+    try {
+      // Clear invalid cart IDs from previous sessions
+      if (req.session.cartId && typeof req.session.cartId !== 'number') {
+        delete req.session.cartId;
+        return res.status(400).json({ message: "Invalid cart session" });
+      }
+      
+      const cartId = req.session?.cartId;
+      if (!cartId) {
+        return res.status(404).json({ message: "Cart not found" });
+      }
+      
+      const itemId = parseInt(req.params.itemId, 10);
+      if (isNaN(itemId)) {
+        return res.status(400).json({ message: "Invalid item ID" });
+      }
+      
+      try {
+        await storage.removeFromCart(cartId, itemId);
+        res.status(200).json({ message: "Item removed from cart" });
+      } catch (dbError) {
+        console.error("Database error removing from cart:", dbError);
+        res.status(500).json({ message: "Could not remove from cart" });
+      }
+    } catch (error) {
+      console.error("Error removing from cart:", error);
+      res.status(500).json({ message: "Server error" });
+    }
+  });
+  
   app.get("/api/cart", async (req, res) => {
     try {
       const cartId = req.session?.cartId;
