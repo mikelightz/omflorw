@@ -186,7 +186,10 @@ export default function Offerings() {
                     >
                       Digital Version ($27)
                     </button>
-                    <button className="bg-terracotta text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300">
+                    <button 
+                      className="bg-terracotta text-white px-6 py-3 rounded-lg text-center hover:bg-opacity-90 transition duration-300"
+                      onClick={() => handleAddToCart(2)}
+                    >
                       Print Version ($45)
                     </button>
                   </div>
