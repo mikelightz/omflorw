@@ -8,8 +8,16 @@ import {
   type ContactMessage,
   type InsertContactMessage,
   type CartItem,
-  type InsertCartItem
+  type InsertCartItem,
+  users,
+  products,
+  cartItems,
+  carts,
+  newsletterSubscriptions,
+  contactMessages
 } from "@shared/schema";
+import { eq, and, inArray } from "drizzle-orm";
+import { db } from "./db";
 
 // Interface for storage operations
 export interface IStorage {
@@ -257,5 +265,199 @@ export class MemStorage implements IStorage {
   }
 }
 
+// Database Storage implementation
+export class DatabaseStorage implements IStorage {
+  async getUser(id: number): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.id, id));
+    return user || undefined;
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.username, username));
+    return user || undefined;
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const [user] = await db
+      .insert(users)
+      .values(insertUser)
+      .returning();
+    return user;
+  }
+
+  async getAllProducts(): Promise<Product[]> {
+    return db.select().from(products);
+  }
+
+  async getProductById(id: number): Promise<Product | undefined> {
+    const [product] = await db.select().from(products).where(eq(products.id, id));
+    return product || undefined;
+  }
+
+  async createProduct(insertProduct: InsertProduct): Promise<Product> {
+    const [product] = await db
+      .insert(products)
+      .values(insertProduct)
+      .returning();
+    return product;
+  }
+
+  async getCart(cartId: number): Promise<{ id: number, items: Array<{ id: number, productId: number, productName: string, price: number, quantity: number, type: string }>, total: number } | undefined> {
+    // Get cart details
+    const [cart] = await db.select().from(carts).where(eq(carts.id, cartId));
+    
+    if (!cart) {
+      return { id: cartId, items: [], total: 0 };
+    }
+    
+    // Get all cart items
+    const items = await db
+      .select({
+        id: cartItems.id,
+        productId: cartItems.productId,
+        quantity: cartItems.quantity
+      })
+      .from(cartItems)
+      .where(eq(cartItems.cartId, cartId));
+      
+    if (items.length === 0) {
+      return { id: cartId, items: [], total: 0 };
+    }
+    
+    // Get product details for each cart item
+    const productIds = items.map(item => item.productId);
+    
+    const productDetails = await db
+      .select()
+      .from(products)
+      .where(inArray(products.id, productIds));
+      
+    // Map product details to cart items
+    const cartProducts = items.map(item => {
+      const product = productDetails.find(p => p.id === item.productId);
+      return {
+        id: item.id,
+        productId: item.productId,
+        productName: product?.name || "Unknown Product",
+        price: product?.price || 0,
+        quantity: item.quantity,
+        type: product?.type || "UNKNOWN"
+      };
+    });
+    
+    // Calculate total
+    const total = cartProducts.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    
+    return {
+      id: cartId,
+      items: cartProducts,
+      total
+    };
+  }
+
+  async addToCart(cartId: number, productId: number, quantity: number = 1): Promise<CartItem> {
+    // Check if product exists
+    const [product] = await db.select().from(products).where(eq(products.id, productId));
+    
+    if (!product) {
+      throw new Error("Product not found");
+    }
+    
+    // Check if cart exists
+    let cart;
+    const [existingCart] = await db.select().from(carts).where(eq(carts.id, cartId));
+    
+    if (!existingCart) {
+      // Create new cart
+      const [newCart] = await db
+        .insert(carts)
+        .values({ id: cartId })
+        .returning();
+      cart = newCart;
+    } else {
+      cart = existingCart;
+    }
+    
+    // Check if item already exists in cart
+    const [existingItem] = await db
+      .select()
+      .from(cartItems)
+      .where(and(
+        eq(cartItems.cartId, cartId),
+        eq(cartItems.productId, productId)
+      ));
+      
+    if (existingItem) {
+      // Update quantity
+      const [updatedItem] = await db
+        .update(cartItems)
+        .set({ quantity: existingItem.quantity + quantity })
+        .where(eq(cartItems.id, existingItem.id))
+        .returning();
+      return updatedItem;
+    } else {
+      // Add new item
+      const [newItem] = await db
+        .insert(cartItems)
+        .values({
+          cartId: cartId,
+          productId: productId,
+          quantity: quantity
+        })
+        .returning();
+      return newItem;
+    }
+  }
+
+  async removeFromCart(cartId: number, itemId: number): Promise<void> {
+    await db
+      .delete(cartItems)
+      .where(and(
+        eq(cartItems.cartId, cartId),
+        eq(cartItems.id, itemId)
+      ));
+  }
+
+  async clearCart(cartId: number): Promise<void> {
+    await db
+      .delete(cartItems)
+      .where(eq(cartItems.cartId, cartId));
+  }
+
+  async getNewsletterSubscriptionByEmail(email: string): Promise<NewsletterSubscription | undefined> {
+    const [subscription] = await db
+      .select()
+      .from(newsletterSubscriptions)
+      .where(eq(newsletterSubscriptions.email, email));
+    return subscription || undefined;
+  }
+
+  async createNewsletterSubscription(insertSubscription: InsertNewsletterSubscription): Promise<NewsletterSubscription> {
+    const [subscription] = await db
+      .insert(newsletterSubscriptions)
+      .values({
+        ...insertSubscription,
+        subscribedAt: new Date()
+      })
+      .returning();
+    return subscription;
+  }
+
+  async createContactMessage(insertMessage: InsertContactMessage): Promise<ContactMessage> {
+    const [message] = await db
+      .insert(contactMessages)
+      .values({
+        ...insertMessage,
+        createdAt: new Date()
+      })
+      .returning();
+    return message;
+  }
+
+  async getAllContactMessages(): Promise<ContactMessage[]> {
+    return db.select().from(contactMessages);
+  }
+}
+
 // Export a singleton instance
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();

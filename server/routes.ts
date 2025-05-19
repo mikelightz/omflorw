@@ -1,4 +1,4 @@
-import type { Express } from "express";
+import type { Express, Request } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { 
@@ -7,6 +7,16 @@ import {
   newsletterSchema,
   cartItemSchema 
 } from "@shared/schema";
+
+// Add session type to express request
+declare module 'express-serve-static-core' {
+  interface Request {
+    session: {
+      cartId?: number;
+      [key: string]: any;
+    }
+  }
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Products API

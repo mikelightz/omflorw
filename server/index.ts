@@ -1,10 +1,40 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import session from "express-session";
+import connectPgSimple from "connect-pg-simple";
+import { pool } from "./db";
 
 const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Setup session middleware with PostgreSQL store
+const PgSession = connectPgSimple(session);
+  
+app.use(
+  session({
+    store: new PgSession({
+      pool,
+      tableName: "session",
+      createTableIfMissing: true,
+    }),
+    secret: process.env.SESSION_SECRET || "omflor-celestial-secret",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      secure: false, // Set to true in production with HTTPS
+    },
+  })
+);
+
+// Add session type definitions
+declare module "express-session" {
+  interface SessionData {
+    cartId?: number;
+  }
+}
 
 app.use((req, res, next) => {
   const start = Date.now();
