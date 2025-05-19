@@ -116,14 +116,14 @@
   
   .moon-phases-bg {
     @apply relative;
-    background-image: url('https://images.unsplash.com/photo-1505506874110-6a7a69069a08?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&h=1080&q=80');
+    background-image: url('/images/forest-moon.png');
     background-size: cover;
-    background-position: center;
+    background-position: center bottom;
   }
   
   .moon-phases-bg::before {
     content: "";
-    @apply absolute inset-0 bg-gradient-to-b from-deepblue/70 to-olive/40 z-0;
+    @apply absolute inset-0 bg-gradient-to-b from-deepblue/30 to-deepblue/10 z-0;
   }
   
   .tab-underline {
